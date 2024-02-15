@@ -1,16 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"logger-test/logger" 
 	"logger-test/internal/server"
+	"os"
 )
 
 func main() {
-
 	server := server.NewServer()
 
 	err := server.ListenAndServe()
 	if err != nil {
-		panic(fmt.Sprintf("cannot start server: %s", err))
+		logger.Warn("Cannot start server", "error", err)
+		os.Exit(1)
 	}
 }
