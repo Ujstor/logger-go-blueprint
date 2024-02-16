@@ -4,24 +4,12 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"path/filepath"
 	"time"
 )
 
-var (
-	fileLogger *log.Logger
-	stdLogger  *log.Logger
-)
+var	stdLogger  *log.Logger
 
 func init() {
-	logFilePath := filepath.Join(".", "log.json")
-	file, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening log file: %v", err)
-	}
-
-	fileLogger = log.New(file, "", 0)
-
 	stdLogger = log.New(os.Stdout, "", 0)
 }
 
@@ -55,16 +43,13 @@ func Info(msg string, attrs ...interface{}) {
 }
 
 func Middleware(msg string, attrs ...interface{}) {
-	logJSON(fileLogger, "MIDDLEWARE", msg, attrs...)
 	logJSON(stdLogger, "MIDDLEWARE", msg, attrs...)
 }
 
 func Warn(msg string, attrs ...interface{}) {
-	logJSON(fileLogger, "WARN", msg, attrs...)
-	logJSON(stdLogger, "WARN", msg, attrs...)
+	logJSON(stdLogger, "MIDDLEWARE", msg, attrs...)
 }
 
 func Error(msg string, attrs ...interface{}) {
-	logJSON(fileLogger, "ERROR", msg, attrs...)
-	logJSON(stdLogger, "ERROR", msg, attrs...)
+	logJSON(stdLogger, "MIDDLEWARE", msg, attrs...)
 }
