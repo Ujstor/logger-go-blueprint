@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-var	stdLogger  *log.Logger
+var (
+	fileLogger *log.Logger
+	stdLogger  *log.Logger
+)
 
 func init() {
 	stdLogger = log.New(os.Stdout, "", 0)
@@ -39,6 +42,7 @@ func logJSON(logger *log.Logger, level string, msg string, attrs ...interface{})
 }
 
 func Info(msg string, attrs ...interface{}) {
+	logJSON(stdLogger, "INFO", msg, attrs...)
 
 }
 
@@ -47,9 +51,9 @@ func Middleware(msg string, attrs ...interface{}) {
 }
 
 func Warn(msg string, attrs ...interface{}) {
-	logJSON(stdLogger, "MIDDLEWARE", msg, attrs...)
+	logJSON(stdLogger, "WARN", msg, attrs...)
 }
 
 func Error(msg string, attrs ...interface{}) {
-	logJSON(stdLogger, "MIDDLEWARE", msg, attrs...)
+	logJSON(stdLogger, "ERROR", msg, attrs...)
 }
